@@ -4,7 +4,7 @@
  * @author Gabriele Triglia, Federico Biasioli
  * @version 1.2
  */
- import java.io.*;
+import java.io.*;
 import java.util.Scanner;
 public class Main {
     static String primoPeriodo = "";
