@@ -19,6 +19,7 @@ public class Main {
 	static ArrayList<String> pastSimpleList = new ArrayList<String>();
 	static ArrayList<String> terzaColonnaList = new ArrayList<String>();
 	static ArrayList<String> ingFormList = new ArrayList<String>();
+	static ArrayList<String> condizione = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		System.out.println("\t\tConditional phrases control program");
@@ -29,69 +30,53 @@ public class Main {
 		 * plane.
 		 */
 		String frase = "done if do";
+		condizione.add("if ");
+		condizione.add("as long as ");
 		phraseSplit(frase);
 		creazioneVettori();
 		Rumbling();
 	}
 
 	private static void phraseSplit(String frase) {
-		int valore = 0;
-		int valorePrimo = 0;
-		int indice = 0;
-
-		String parolaDaCercare = "if";
-
 		String lineaFile = frase.toLowerCase();
-		int poizioneParola = lineaFile.indexOf(parolaDaCercare);
-		// assegnamento del valore precedente all'inizio della parola
-		if (poizioneParola == 0) {
-			valorePrimo = 0;
-		} else {
-			valorePrimo = poizioneParola - 1;
-		}
-		// assegnamento del valore che corrisponde al carattere successivo della parola
-		valore = poizioneParola + (parolaDaCercare.length());
-		if (lineaFile.contains(parolaDaCercare)) {
 
+		for (int i = 0; i < condizione.size(); i++) {
+			String parolaDaCercare = condizione.get(i);
+			int poizioneParola = findToken(frase, parolaDaCercare);
+			if (poizioneParola==-1) {
+				continue;
+			}
+			
+			System.out.println("Indice di if: " + poizioneParola);		
+
+			int indice2 = 0;
 			// controllo per capire se è una sottostringa o una vera e propria parola
-			if ((lineaFile.charAt(valore) < 65 || lineaFile.charAt(valore) > 90)
-					&& (lineaFile.charAt(valore) < 97 || lineaFile.charAt(valore) > 122)
-					&& (lineaFile.charAt(valorePrimo) < 65 || lineaFile.charAt(valorePrimo) > 90
-							|| lineaFile.charAt(valorePrimo) == parolaDaCercare.charAt(0))
-					&& (lineaFile.charAt(valorePrimo) < 97 || lineaFile.charAt(valorePrimo) > 122
-							|| lineaFile.charAt(valorePrimo) == parolaDaCercare.charAt(0))) {
-				indice = poizioneParola;
+			if (lineaFile.contains(",") || lineaFile.contains("?") || lineaFile.contains("!") || lineaFile.contains(".")) {
+				indice2 = lineaFile.indexOf(",");
+				if (indice2 == -1) {
+					indice2 = lineaFile.indexOf("!");
+					indice2 = lineaFile.indexOf("?");
+					indice2 = lineaFile.indexOf(".");
+				}
+				if (indice2 == lineaFile.length()) {
+					indice2 = -1;
+				}
 			}
-		}
-		System.out.println("Indice di if: " + indice);
+			System.out.println("Indice di segno di divisione: " + indice2);
 
-		int indice2 = 0;
-		// controllo per capire se è una sottostringa o una vera e propria parola
-		if (lineaFile.contains(",") || lineaFile.contains("?") || lineaFile.contains("!") || lineaFile.contains(".")) {
-			indice2 = lineaFile.indexOf(",");
-			if (indice2 == -1) {
-				indice2 = lineaFile.indexOf("!");
-				indice2 = lineaFile.indexOf("?");
-				indice2 = lineaFile.indexOf(".");
+			if (indice2 != -1 && indice2 > poizioneParola) {
+				secondoPeriodo = lineaFile.substring(indice2 + 1);
+				primoPeriodo = lineaFile.substring(0, indice2 + 1);
+				System.out.println(primoPeriodo);
+				System.out.println(secondoPeriodo);
 			}
-			if (indice2 == lineaFile.length()) {
-				indice2 = -1;
+
+			if (indice2 < poizioneParola) {
+				secondoPeriodo = lineaFile.substring(poizioneParola);
+				primoPeriodo = lineaFile.substring(0, poizioneParola);
+				System.out.println(primoPeriodo);
+				System.out.println(secondoPeriodo);
 			}
-		}
-		System.out.println("Indice di segno di divisione: " + indice2);
-
-		if (indice2 != -1 && indice2 > indice) {
-			secondoPeriodo = lineaFile.substring(indice2 + 1);
-			primoPeriodo = lineaFile.substring(0, indice2 + 1);
-			System.out.println(primoPeriodo);
-			System.out.println(secondoPeriodo);
-		}
-
-		if (indice2 < indice) {
-			secondoPeriodo = lineaFile.substring(indice);
-			primoPeriodo = lineaFile.substring(0, indice);
-			System.out.println(primoPeriodo);
-			System.out.println(secondoPeriodo);
 		}
 	}
 
@@ -435,5 +420,22 @@ public class Main {
 				}
 			}
 		}
+	}
+	
+	private static int findToken(String frase, String parolaDaCercare){
+		String lineaFile = frase.toLowerCase();
+		int poizioneParola = lineaFile.indexOf(parolaDaCercare);
+
+		// verifico presenza stringa: ciclo se non presente
+		if (poizioneParola == -1) {
+			return -1;
+		}
+		
+		// verifico la presenza di un carattere prima della stringa se la stringa non inizia in posizione 0
+		if ((poizioneParola != 0) && (Character.isLetter(lineaFile.charAt(poizioneParola - 1)))) {
+			return -1;
+		}
+
+		return poizioneParola;
 	}
 }
