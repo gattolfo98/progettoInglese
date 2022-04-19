@@ -8,19 +8,42 @@ import java.util.ArrayList;
  * @author Gabriele Triglia, Federico Biasioli
  * @version 1.2
  */
-
 public class Main {
+
+	/** prima parte della frase */
 	static String primoPeriodo = "";
+
+	/** seconda parte della frase */
 	static String secondoPeriodo = "";
+
+	/** tempo verbale del primo periodo */
 	static int tempoPrimoPeriodo = 0;
+
+	/** tempo verbale del secondo periodo */
 	static int tempoSecondoPeriodo = 0;
+
+	/** lista contenente i verbi al present simple */
 	static ArrayList<String> presentSimpleList = new ArrayList<String>();
+
+	/** lista contenente i verbi al past participle */
 	static ArrayList<String> pastParticipleList = new ArrayList<String>();
+
+	/** lista contenente i verbi al past simple */
 	static ArrayList<String> pastSimpleList = new ArrayList<String>();
+	
+	/** lista contenente i verbi presenti alla terza persona singolare */
 	static ArrayList<String> terzaColonnaList = new ArrayList<String>();
+
+	/** lista contenente i verbi alla ing form*/
 	static ArrayList<String> ingFormList = new ArrayList<String>();
+
+	/** lista contenente i token per il periodo ipotetico */
 	static ArrayList<String> condizione = new ArrayList<String>();
 
+	/**
+	 * Metodo principale del programma
+	 * @param args arguments
+	 */
 	public static void main(String[] args) {
 		System.out.println("\t\tConditional phrases control program");
 		/*
@@ -29,14 +52,17 @@ public class Main {
 		 * I'm afraid of flying. If I wasn't afraid of flying we'd have travelled by
 		 * plane.
 		 */
-		String frase = "done if do";
-		condizione.add("if ");
-		condizione.add("as long as ");
+		String frase = "done as long as do";
+		creaConzizionali();
 		phraseSplit(frase);
 		creazioneVettori();
 		Rumbling();
 	}
 
+	/**
+	 * metodo statico per dividere la frase condizonale
+	 * @param frase la frase da dividere
+	 */
 	private static void phraseSplit(String frase) {
 		String lineaFile = frase.toLowerCase();
 
@@ -80,6 +106,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Metodo statico per popolare le Liste con i verbi 
+	 */
 	private static void creazioneVettori() {
 		String nomeFile = "English_verb.CSV";
 		String nomeCartella = "Database";
@@ -112,6 +141,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * metodo statico per riconoscere il tempo verbale del verbo non composto
+	 */
 	private static void Rumbling() {
 		int i = 0;
 		int valore = 0;
@@ -422,6 +454,12 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Metodo statico per trovare il il token (parola da cercare)
+	 * @param frase la frase dove eseguire la ricerca
+	 * @param parolaDaCercare la parola da cercare nella frase
+	 * @return pozisione della parola
+	 */
 	private static int findToken(String frase, String parolaDaCercare){
 		String lineaFile = frase.toLowerCase();
 		int poizioneParola = lineaFile.indexOf(parolaDaCercare);
@@ -437,5 +475,22 @@ public class Main {
 		}
 
 		return poizioneParola;
+	}
+
+	/**
+	 * metodo statico per popolare la lista condizione
+	 */
+	private static void creaConzizionali() {
+		condizione.add("if ");
+		condizione.add("as long as ");
+		condizione.add("only if ");
+		condizione.add("provided ");
+		condizione.add("providing ");
+		condizione.add("on condition ");
+		condizione.add("whether or not ");
+		condizione.add("even if ");
+		condizione.add("suppose ");
+		condizione.add("supposing ");
+		condizione.add("unless ");
 	}
 }
