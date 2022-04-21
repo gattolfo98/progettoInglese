@@ -8,11 +8,8 @@ Sviluppato: a scuola
 
 Classe Main: classe principale contente i metodi statici utili al programma 
 
-TODO:
-DOCUMENTAZIONE!!! 
-aggiungere sostituti di if nella condizionale 
+TODO: 
 ampliare assortimento verbi
-creare un metodo di riconoscimento per i verbi composti
 creare un metodo per catalogare la frase
 creare una buona UI (GUI?)
 inglesizzare il tutto

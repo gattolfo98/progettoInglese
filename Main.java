@@ -17,16 +17,19 @@ public class Main {
 	static String secondoPeriodo = "";
 
 	/** tempo verbale del primo periodo */
+	static int isIf = 0;
+
+	/** tempo verbale del primo periodo */
 	static int tempoVerbalePP = 0;
 
 	/** tempo verbale del secondo periodo */
 	static int tempoVerbaleSP = 0;
 
-	/** tempo verbale del primo periodo */
-	static int tempoPrimoPeriodo = 0;
+	/** tempo verbale estratto dal primo periodo */
+	static String verboCompostoPrimoPeriodo = " ";
 
-	/** tempo verbale del secondo periodo */
-	static int tempoSecondoPeriodo = 0;
+	/** tempo verbale estratto dal secondo periodo */
+	static String verboCompostoSecondoPeriodo = " ";
 
 	/** array contenente gli indici dei verbi del primo periodo */
 	static String[] parolePrimoPeriodo = new String[100];
@@ -66,6 +69,7 @@ public class Main {
 
 	/**
 	 * Metodo principale del programma
+	 * 
 	 * @param args arguments
 	 */
 	public static void main(String[] args) {
@@ -76,13 +80,14 @@ public class Main {
 		 * I'm afraid of flying. If I wasn't afraid of flying we'd have travelled by
 		 * plane.
 		 */
-		String frase = "we'd have travelled by plane If I h not afraid of flying";
+		String frase = "Would you have travelled what to do if you were having a heart attack?";
 		creaConzizionali();
 		phraseSplit(frase);
 		creazioneVettori();
 		scomponiPeriodo();
 		Rumbling();
 		gendeRecognition();
+		theLastOfUs();
 	}
 
 	/**
@@ -123,6 +128,7 @@ public class Main {
 				primoPeriodo = lineaFile.substring(0, indice2 + 1);
 				System.out.println(primoPeriodo);
 				System.out.println(secondoPeriodo);
+				isIf = 0;
 			}
 
 			if (indice2 < poizioneParola) {
@@ -130,6 +136,7 @@ public class Main {
 				primoPeriodo = lineaFile.substring(0, poizioneParola);
 				System.out.println(primoPeriodo);
 				System.out.println(secondoPeriodo);
+				isIf = 1;
 			}
 		}
 	}
@@ -169,10 +176,34 @@ public class Main {
 		}
 	}
 
-	/**
-	 * metodo statico per risconoscere il tempo verbale dei due periodi
-	 */
 	private static void gendeRecognition() {
+		int scelta = 0;
+		int rimozione = 0;
+		Scanner sc1 = new Scanner(System.in);
+		System.out.println("Il seguente verbo e' corretto? " + verboCompostoPrimoPeriodo);
+		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
+		scelta = sc1.nextInt();
+		while (scelta == 1) {
+			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
+					+ verboCompostoPrimoPeriodo);
+			rimozione = sc1.nextInt() - 1;
+			System.out.println("Il seguente verbo e' stato rimosso: " + verbiPrimoPeriodo.get(rimozione));
+			verbiPrimoPeriodo.remove(rimozione);
+			scelta = 0;
+		}
+		System.out.println("--------------------------------------------------------------");
+		System.out.println("Il seguente verbo e' corretto? " + verboCompostoSecondoPeriodo);
+		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
+		scelta = sc1.nextInt();
+		while (scelta == 1) {
+			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
+					+ verboCompostoSecondoPeriodo);
+			rimozione = sc1.nextInt();
+			System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
+			verbiSecondoPeriodo.remove(rimozione);
+			scelta = 0;
+		}
+		sc1.close();
 		if (verbiPrimoPeriodo.size() == 1) {
 			// Present simple
 			if (codiceTempoVerbalePP.get(0) == 1 || codiceTempoVerbalePP.get(0) == 4) {
@@ -294,15 +325,15 @@ public class Main {
 			}
 		}
 		System.out.println("Primo periodo " + tempoVerbalePP);
-		// System.out.println("Secondo periodo " +tempoVerbaleSP);
+		System.out.println("Secondo periodo " + tempoVerbaleSP);
 	}
 
 	/**
 	 * metodo statico per riconoscere il tempo verbale del verbo non composto
 	 */
 	private static void Rumbling() {
-		String verboCompostoPrimoPeriodo = "";
-		String verboCompostoSecondoPeriodo = "";
+		verboCompostoPrimoPeriodo = "";
+		verboCompostoSecondoPeriodo = "";
 		int i = 0;
 		int z = 0;
 		while (z < parolePrimoPeriodo.length) {
@@ -312,36 +343,50 @@ public class Main {
 					i = 0;
 					z++;
 					codiceTempoVerbalePP.add(6);
+				} else if (parolePrimoPeriodo[z].equals("would")) {
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(7);
 				} else {
 					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 					i = 0;
 					z++;
 					codiceTempoVerbalePP.add(1);
 				}
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (parolePrimoPeriodo[z].equals(pastSimpleList.get(i))) {
 				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbalePP.add(2);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (parolePrimoPeriodo[z].equals(pastParticipleList.get(i))) {
 				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbalePP.add(3);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (parolePrimoPeriodo[z].equals(terzaColonnaList.get(i))) {
 				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbalePP.add(4);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (parolePrimoPeriodo[z].equals(ingFormList.get(i))) {
 				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbalePP.add(5);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			i++;
 			if (i == presentSimpleList.size()) {
@@ -357,30 +402,40 @@ public class Main {
 				i = 0;
 				z++;
 				codiceTempoVerbaleSP.add(1);
+				if (z < parolePrimoPeriodo.length)
+					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(pastSimpleList.get(i))) {
 				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbaleSP.add(2);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(pastParticipleList.get(i))) {
 				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbaleSP.add(3);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(terzaColonnaList.get(i))) {
 				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbaleSP.add(4);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(ingFormList.get(i))) {
 				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 				i = 0;
 				z++;
 				codiceTempoVerbaleSP.add(5);
+				if (z == parolePrimoPeriodo.length)
+					break;
 			}
 			i++;
 			if (i == presentSimpleList.size()) {
@@ -410,9 +465,6 @@ public class Main {
 		System.out.println(verboCompostoSecondoPeriodo);
 	}
 
-	/**
-	 * metodo statico per scomporre i periodi in parole 
-	 */
 	private static void scomponiPeriodo() {
 		String copiaPP = primoPeriodo;
 		String copiaSP = secondoPeriodo;
@@ -460,5 +512,17 @@ public class Main {
 		condizione.add("suppose ");
 		condizione.add("supposing ");
 		condizione.add("unless ");
+	}
+
+	private static void theLastOfUs() {
+		System.out.println(isIf);
+		if ((isIf == 1 && tempoVerbaleSP == 1 || isIf == 0 && tempoVerbalePP == 1)
+				&& (isIf == 1 && tempoVerbaleSP == 7 || isIf == 0 && tempoVerbalePP == 7)) {
+			System.out.println("Il tipo di condizionale e': 1");
+		}
+		if ((isIf == 1 && tempoVerbaleSP == 2 || isIf == 0 && tempoVerbalePP == 2)
+				&& (isIf == 1 && tempoVerbaleSP == 7 || isIf == 0 && tempoVerbalePP == 7)) {
+			System.out.println("Il tipo di condizionale e': 2");
+		}
 	}
 }
