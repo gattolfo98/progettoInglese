@@ -13,3 +13,4 @@ ampliare assortimento verbi
 creare un metodo per catalogare la frase
 creare una buona UI (GUI?)
 inglesizzare il tutto
+aggiustare rumbling, theLastOfUs e gendeRecognition
