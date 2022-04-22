@@ -1,6 +1,6 @@
 import java.io.File;
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Project to classificate conditional phrases
@@ -77,10 +77,13 @@ public class Main {
 		/*
 		 * frasi usate:
 		 * If it hadn't been for you, I wouldn't be here now.
-		 * I'm afraid of flying. If I wasn't afraid of flying, we'd have travelled by
-		 * plane.
+		 * If I wasn't afraid of flying, we'd have travelled by plane.
+		 * As long as she needs me, I'll be there for her.
+		 *if you did not study, you would not pass the exam.
+		 *If this thing happens, that thing will happen
+		 *if he does not call you, tell me immediately
 		 */
-		String frase = "If I was not afraid of flying, we would have travelled by.";
+		String frase = "if he does not call you, tell me immediately.";
 		creaConzizionali();
 		phraseSplit(frase);
 		creazioneVettori();
@@ -124,15 +127,16 @@ public class Main {
 			System.out.println("Indice di segno di divisione: " + indice2);
 
 			if (indice2 != -1 && indice2 > poizioneParola) {
-				secondoPeriodo = lineaFile.substring(indice2 + 1);
-				primoPeriodo = lineaFile.substring(0, indice2 + 1);
+				secondoPeriodo = lineaFile.substring(indice2 + 2, lineaFile.length()-1);
+				primoPeriodo = lineaFile.substring(0, indice2);
 				System.out.println(primoPeriodo);
 				System.out.println(secondoPeriodo);
+				int lunghezza = secondoPeriodo.length();
 				isIf = 0;
 			}
 
 			if (indice2 < poizioneParola) {
-				secondoPeriodo = lineaFile.substring(poizioneParola);
+				secondoPeriodo = lineaFile.substring(poizioneParola,lineaFile.length()-1);
 				primoPeriodo = lineaFile.substring(0, poizioneParola);
 				System.out.println(primoPeriodo);
 				System.out.println(secondoPeriodo);
@@ -198,7 +202,7 @@ public class Main {
 		while (scelta == 1) {
 			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
 					+ verboCompostoSecondoPeriodo);
-			rimozione = sc1.nextInt();
+			rimozione = sc1.nextInt()-1;
 			System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
 			verbiSecondoPeriodo.remove(rimozione);
 			scelta = 0;
@@ -221,6 +225,11 @@ public class Main {
 			}
 		}
 		if (verbiPrimoPeriodo.size() == 1) {
+			//imperative
+			if(verbiPrimoPeriodo.get(0).equals(parolePrimoPeriodo[0]))
+			{
+				tempoVerbalePP=17;
+			}
 			// Present simple
 			if ((codiceTempoVerbalePP.get(0) == 1 || codiceTempoVerbalePP.get(0) == 4)&&tempoVerbalePP==0) {
 				tempoVerbalePP = 1;
@@ -231,6 +240,48 @@ public class Main {
 			}
 		}
 		if (verbiPrimoPeriodo.size() == 2) {
+			//may form
+			if(verbiPrimoPeriodo.get(0).equals("may")&&tempoVerbalePP==0){
+				if((codiceTempoVerbalePP.get(1)==1 || codiceTempoVerbalePP.get(1) == 4)&&tempoVerbalePP==0){
+					tempoVerbalePP = 12;
+				}
+			}
+			//could form
+			if (verbiPrimoPeriodo.get(0).equals("could") && tempoVerbalePP == 0) {
+				if ((codiceTempoVerbalePP.get(1) == 1 || codiceTempoVerbalePP.get(1) == 4) && tempoVerbalePP == 0) {
+					tempoVerbalePP = 13;
+				}
+			}
+			//might form
+			if (verbiPrimoPeriodo.get(0).equals("might") && tempoVerbalePP == 0) {
+				if ((codiceTempoVerbalePP.get(1) == 1 || codiceTempoVerbalePP.get(1) == 4) && tempoVerbalePP == 0) {
+					tempoVerbalePP = 14;
+				}
+			}
+			//must form
+			if (verbiPrimoPeriodo.get(0).equals("must") && tempoVerbalePP == 0) {
+				if ((codiceTempoVerbalePP.get(1) == 1 || codiceTempoVerbalePP.get(1) == 4) && tempoVerbalePP == 0) {
+					tempoVerbalePP = 15;
+				}
+			}
+			// must form
+			if (verbiPrimoPeriodo.get(0).equals("can") && tempoVerbalePP == 0) {
+				if ((codiceTempoVerbalePP.get(1) == 1 || codiceTempoVerbalePP.get(1) == 4) && tempoVerbalePP == 0) {
+					tempoVerbalePP = 16;
+				}
+			}
+			// Past Simple (negativo)
+			if ((codiceTempoVerbalePP.get(0) == 2)&&tempoVerbalePP==0) {
+				if (codiceTempoVerbalePP.get(1) == 1) {
+					tempoVerbalePP = 2;
+				}
+			}
+			// Present Simple (negativo)
+			if ((codiceTempoVerbalePP.get(0) == 1||codiceTempoVerbalePP.get(0) == 4)&&tempoVerbalePP==0) {
+				if (codiceTempoVerbalePP.get(1) == 1) {
+					tempoVerbalePP = 1;
+				}
+			}
 			// Present Continuous
 			if ((codiceTempoVerbalePP.get(0) == 1 || codiceTempoVerbalePP.get(0) == 4)&&tempoVerbalePP==0) {
 				if (codiceTempoVerbalePP.get(1) == 5) {
@@ -238,7 +289,7 @@ public class Main {
 				}
 			}
 			// Present Perfect
-			if ((codiceTempoVerbalePP.get(0) == 1 || codiceTempoVerbalePP.get(0) == 4)&&tempoVerbalePP==0) {
+			if ((verbiPrimoPeriodo.get(0).equals("have")  || verbiPrimoPeriodo.get(0).equals("has"))&&tempoVerbalePP==0) {
 				if (codiceTempoVerbalePP.get(1) == 3 || codiceTempoVerbalePP.get(1) == 2) {
 					tempoVerbalePP = 4;
 				}
@@ -263,6 +314,22 @@ public class Main {
 			}
 		}
 		if (verbiPrimoPeriodo.size() == 3) {
+			//could + have + past participle
+			if(verbiPrimoPeriodo.get(0).equals("could")){
+				if (verbiPrimoPeriodo.get(1).equals("have")) {
+					if ((codiceTempoVerbalePP.get(2) == 3 || codiceTempoVerbalePP.get(2) == 2) && tempoVerbalePP == 0) {
+						tempoVerbalePP = 18;
+					}
+				}
+			}
+			//might + have + past participle
+			if(verbiPrimoPeriodo.get(0).equals("might")){
+				if (verbiPrimoPeriodo.get(1).equals("have")) {
+					if ((codiceTempoVerbalePP.get(2) == 3 || codiceTempoVerbalePP.get(2) == 2) && tempoVerbalePP == 0) {
+						tempoVerbalePP = 19;
+					}
+				}
+			}
 			// Present Perfect Continuous
 			if ((codiceTempoVerbalePP.get(0) == 1 || codiceTempoVerbalePP.get(0) == 4)&&tempoVerbalePP==0) {
 				if (codiceTempoVerbalePP.get(1) == 3 || codiceTempoVerbalePP.get(1) == 2) {
@@ -280,6 +347,9 @@ public class Main {
 				}
 			}
 		}
+
+		//Tempi verbali secondo periodo
+
 		if(verbiSecondoPeriodo.get(0).equals("would")){
 			if(verbiSecondoPeriodo.size() == 2){
 				//would + base form
@@ -297,6 +367,11 @@ public class Main {
 			}
 		}
 		if (verbiSecondoPeriodo.size() == 1) {
+			//imperative
+			if(verbiSecondoPeriodo.get(0).equals(paroleSecondoPeriodo[0]))
+			{
+				tempoVerbaleSP=17;
+			}
 			// Present simple
 			if ((codiceTempoVerbaleSP.get(0) == 1 || codiceTempoVerbaleSP.get(0) == 4)&&tempoVerbaleSP==0) {
 				tempoVerbaleSP = 1;
@@ -307,6 +382,48 @@ public class Main {
 			}
 		}
 		if (verbiSecondoPeriodo.size() == 2) {
+			// may form
+			if (verbiSecondoPeriodo.get(0).equals("may") && tempoVerbaleSP == 0) {
+				if ((codiceTempoVerbaleSP.get(1) == 1 || codiceTempoVerbaleSP.get(1) == 4) && tempoVerbaleSP == 0) {
+					tempoVerbaleSP = 12;
+				}
+			}
+			// could form
+			if (verbiSecondoPeriodo.get(0).equals("could") && tempoVerbaleSP == 0) {
+				if ((codiceTempoVerbaleSP.get(1) == 1 || codiceTempoVerbaleSP.get(1) == 4) && tempoVerbaleSP == 0) {
+					tempoVerbaleSP = 13;
+				}
+			}
+			// might form
+			if (verbiSecondoPeriodo.get(0).equals("might") && tempoVerbaleSP == 0) {
+				if ((codiceTempoVerbaleSP.get(1) == 1 || codiceTempoVerbaleSP.get(1) == 4) && tempoVerbaleSP == 0) {
+					tempoVerbaleSP = 14;
+				}
+			}
+			// must form
+			if (verbiSecondoPeriodo.get(0).equals("must") && tempoVerbaleSP == 0) {
+				if ((codiceTempoVerbaleSP.get(1) == 1 || codiceTempoVerbaleSP.get(1) == 4) && tempoVerbaleSP == 0) {
+					tempoVerbaleSP = 15;
+				}
+			}
+			// can form
+			if (verbiSecondoPeriodo.get(0).equals("can") && tempoVerbaleSP == 0) {
+				if ((codiceTempoVerbaleSP.get(1) == 1 || codiceTempoVerbaleSP.get(1) == 4) && tempoVerbaleSP == 0) {
+					tempoVerbaleSP = 16;
+				}
+			}
+			// Past Simple (negativo)
+			if ((codiceTempoVerbaleSP.get(0) == 2)&&tempoVerbaleSP==0) {
+				if (codiceTempoVerbaleSP.get(1) == 1) {
+					tempoVerbaleSP = 3;
+				}
+			}
+			// Present Simple (negativo)
+			if ((codiceTempoVerbaleSP.get(0) == 1||codiceTempoVerbaleSP.get(0) == 4)&&tempoVerbaleSP==0) {
+				if (codiceTempoVerbaleSP.get(1) == 1) {
+					tempoVerbaleSP = 1;
+				}
+			}
 			// Present Continuous
 			if ((codiceTempoVerbaleSP.get(0) == 1 || codiceTempoVerbaleSP.get(0) == 4)&&tempoVerbaleSP==0) {
 				if (codiceTempoVerbaleSP.get(1) == 5) {
@@ -314,7 +431,7 @@ public class Main {
 				}
 			}
 			// Present Perfect
-			if ((codiceTempoVerbaleSP.get(0) == 1 || codiceTempoVerbaleSP.get(0) == 4)&&tempoVerbaleSP==0) {
+			if ((verbiSecondoPeriodo.get(0).equals("have") || verbiSecondoPeriodo.get(0).equals("has"))&&tempoVerbaleSP==0) {
 				if (codiceTempoVerbaleSP.get(1) == 3||codiceTempoVerbaleSP.get(1) == 2) {
 					tempoVerbaleSP = 4;
 				}
@@ -339,6 +456,22 @@ public class Main {
 			}
 		}
 		if (verbiSecondoPeriodo.size() == 3) {
+			// could + have + past participle
+			if (verbiSecondoPeriodo.get(0).equals("could")) {
+				if (verbiSecondoPeriodo.get(1).equals("have")) {
+					if ((codiceTempoVerbaleSP.get(2) == 3 || codiceTempoVerbaleSP.get(2) == 2) && tempoVerbaleSP == 0) {
+						tempoVerbaleSP = 18;
+					}
+				}
+			}
+			// might + have + past participle
+			if (verbiSecondoPeriodo.get(0).equals("might")) {
+				if (verbiSecondoPeriodo.get(1).equals("have")) {
+					if ((codiceTempoVerbaleSP.get(2) == 3 || codiceTempoVerbaleSP.get(2) == 2) && tempoVerbaleSP == 0) {
+						tempoVerbaleSP = 19;
+					}
+				}
+			}
 			// Present Perfect Continuous
 			if ((codiceTempoVerbaleSP.get(0) == 1 || codiceTempoVerbaleSP.get(0) == 4)&&tempoVerbaleSP==0) {
 				if (codiceTempoVerbaleSP.get(1) == 3) {
@@ -347,7 +480,7 @@ public class Main {
 					}
 				}
 			}
-			// Present Perfect Continuous
+			// past Perfect Continuos
 			if (codiceTempoVerbaleSP.get(0) == 2&&tempoVerbaleSP==0) {
 				if (codiceTempoVerbaleSP.get(1) == 3) {
 					if (codiceTempoVerbaleSP.get(2) == 5) {
@@ -380,7 +513,7 @@ public class Main {
 					i = 0;
 					z++;
 					codiceTempoVerbalePP.add(7);
-				} else {
+				}   else {
 					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
 					i = 0;
 					z++;
@@ -390,34 +523,62 @@ public class Main {
 					break;
 			}
 			if (parolePrimoPeriodo[z].equals(pastSimpleList.get(i))) {
-				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbalePP.add(2);
+				if (parolePrimoPeriodo[z].equals("could")) {
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(8);
+				}	else{
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(2);
+				}
 				if (z == parolePrimoPeriodo.length)
 					break;
 			}
 			if (parolePrimoPeriodo[z].equals(pastParticipleList.get(i))) {
-				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbalePP.add(3);
+				if (parolePrimoPeriodo[z].equals("might")) {
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(9);
+				} else{
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(3);
+				}
 				if (z == parolePrimoPeriodo.length)
 					break;
 			}
 			if (parolePrimoPeriodo[z].equals(terzaColonnaList.get(i))) {
-				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbalePP.add(4);
+				if (parolePrimoPeriodo[z].equals("may")) {
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(10);
+				} else{
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(4);
+				}
 				if (z == parolePrimoPeriodo.length)
 					break;
 			}
 			if (parolePrimoPeriodo[z].equals(ingFormList.get(i))) {
-				verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbalePP.add(5);
+				if (parolePrimoPeriodo[z].equals("must")) {
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(11);
+				} else{
+					verbiPrimoPeriodo.add(parolePrimoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbalePP.add(5);
+				}
 				if (z == parolePrimoPeriodo.length)
 					break;
 			}
@@ -432,7 +593,7 @@ public class Main {
 		while (z < paroleSecondoPeriodo.length) {
 			if (paroleSecondoPeriodo[z].equals(presentSimpleList.get(i))) {
 				if (paroleSecondoPeriodo[z].equals("will")) {
-					verbiSecondoPeriodo.add(parolePrimoPeriodo[z]);
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 					i = 0;
 					z++;
 					codiceTempoVerbaleSP.add(6);
@@ -441,7 +602,7 @@ public class Main {
 					i = 0;
 					z++;
 					codiceTempoVerbaleSP.add(7);
-				} else {
+				}   else {
 					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
 					i = 0;
 					z++;
@@ -451,34 +612,62 @@ public class Main {
 					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(pastSimpleList.get(i))) {
-				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbaleSP.add(2);
+				if (paroleSecondoPeriodo[z].equals("could")) {
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(8);
+				} else{
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(2);
+				}
 				if (z == paroleSecondoPeriodo.length)
 					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(pastParticipleList.get(i))) {
-				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbaleSP.add(3);
+				if (paroleSecondoPeriodo[z].equals("might")) {
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(9);
+				} else{
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(3);
+				}
 				if (z == parolePrimoPeriodo.length)
 					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(terzaColonnaList.get(i))) {
-				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbaleSP.add(4);
+				if (paroleSecondoPeriodo[z].equals("may")) {
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(10);
+				} else{
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(4);
+				}
 				if (z == paroleSecondoPeriodo.length)
 					break;
 			}
 			if (paroleSecondoPeriodo[z].equals(ingFormList.get(i))) {
-				verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
-				i = 0;
-				z++;
-				codiceTempoVerbaleSP.add(5);
+				if (paroleSecondoPeriodo[z].equals("must")) {
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(11);
+				} else{
+					verbiSecondoPeriodo.add(paroleSecondoPeriodo[z]);
+					i = 0;
+					z++;
+					codiceTempoVerbaleSP.add(5);
+				}
 				if (z == paroleSecondoPeriodo.length)
 					break;
 			}
@@ -506,8 +695,8 @@ public class Main {
 			}
 			i++;
 		}
-		System.out.println(verboCompostoPrimoPeriodo);
-		System.out.println(verboCompostoSecondoPeriodo);
+		//System.out.println(verboCompostoPrimoPeriodo);
+		//System.out.println(verboCompostoSecondoPeriodo);
 	}
 
 	private static void scomponiPeriodo() {
@@ -560,22 +749,60 @@ public class Main {
 	}
 
 	private static void theLastOfUs() {
-		System.out.println(isIf);
-		if (((isIf == 1 && tempoVerbaleSP == 1) || (isIf == 0 && tempoVerbalePP == 1))
-				&& ((isIf == 1 && tempoVerbalePP == 7) || (isIf == 0 && tempoVerbaleSP == 7))) {
-			System.out.println("Il tipo di condizionale e': 1");
+		// tipo uno
+		int conferma = 0;
+		if(tempoVerbalePP!=0 && tempoVerbaleSP !=0){
+			if ((((isIf == 1 && tempoVerbaleSP == 1) || (isIf == 1 && tempoVerbaleSP == 3) || (isIf == 1 && tempoVerbaleSP == 4))
+				|| ((isIf == 0 && tempoVerbalePP == 1) || (isIf == 0 && tempoVerbalePP == 3) || (isIf == 0 && tempoVerbalePP == 4)))
+				&& (((isIf == 0 && tempoVerbaleSP == 7) || (isIf == 0 && tempoVerbaleSP == 12) || (isIf == 0 && tempoVerbaleSP == 14)
+				|| (isIf == 0 && tempoVerbaleSP == 15) || (isIf == 0 && tempoVerbaleSP == 16)  || (isIf == 0 && tempoVerbaleSP == 17))
+				|| ((isIf == 1 && tempoVerbalePP == 7) || (isIf == 1 && tempoVerbalePP == 12)  || (isIf == 1 && tempoVerbalePP == 14)
+				|| (isIf == 1 && tempoVerbalePP == 15) || (isIf == 1 && tempoVerbalePP == 16)  || (isIf == 1 && tempoVerbalePP == 17)))) {
+				System.out.println("Il tipo di condizionale e': 1");
+				conferma++;
+			}
+			// tipo due
+			if ((((isIf == 1 && tempoVerbaleSP == 2) || (isIf == 1 && tempoVerbaleSP == 5)) 
+				|| ((isIf == 0&& tempoVerbalePP == 2) || (isIf == 0 && tempoVerbalePP == 5)))
+				&& (((isIf == 1 && tempoVerbalePP == 10) || (isIf == 1 && tempoVerbalePP == 13) || (isIf == 1 && tempoVerbalePP == 15))
+				|| ((isIf == 0 && tempoVerbaleSP == 10) || (isIf == 0 && tempoVerbaleSP == 13)|| (isIf == 0 && tempoVerbaleSP == 15)))) {
+				System.out.println("Il tipo di condizionale e': 2");
+				conferma++;
+			}
+			// tipo tre
+			if ((((isIf == 1 && tempoVerbaleSP == 6) || (isIf == 1 && tempoVerbaleSP == 9))
+				||(((isIf == 0 && tempoVerbalePP == 6) || (isIf == 0 && tempoVerbalePP == 9))))
+				&& (((isIf == 1 && tempoVerbalePP == 11) || (isIf == 1 && tempoVerbalePP == 18) || (isIf == 1 && tempoVerbalePP == 19))
+				|| ((isIf == 0&& tempoVerbaleSP == 11) || (isIf == 0 && tempoVerbaleSP == 18)|| (isIf == 0 && tempoVerbaleSP == 19)))) {
+				System.out.println("Il tipo di condizionale e': 3");
+				conferma++;
+			}
+			//	tipo zero
+			if ((((tempoVerbalePP == 1) || (tempoVerbalePP == 3) || (tempoVerbalePP == 4)))
+					&& (((tempoVerbaleSP == 1) || (tempoVerbaleSP == 3) || (tempoVerbaleSP == 4)))) {
+				System.out.println("Il tipo di condizionale e': 0");
+				conferma++;
+			}
+			//1 mixed
+			if ((((isIf == 1 && tempoVerbaleSP == 6) || (isIf == 1 && tempoVerbaleSP == 9))
+				||(((isIf == 0 && tempoVerbalePP == 6) || (isIf == 0 && tempoVerbalePP == 9))))
+				&& (((isIf == 1 && tempoVerbalePP == 10) || (isIf == 1 && tempoVerbalePP == 13) || (isIf == 1 && tempoVerbalePP == 15))
+				|| ((isIf == 0 && tempoVerbaleSP == 10) || (isIf == 0 && tempoVerbaleSP == 13)|| (isIf == 0 && tempoVerbaleSP == 15)))) {
+				System.out.println("Il tipo di condizionale e': mixed conditional");
+				conferma++;
+			}
+			//2 mixed
+			if ((((isIf == 1 && tempoVerbaleSP == 2) || (isIf == 1 && tempoVerbaleSP == 5)) 
+				|| ((isIf == 0&& tempoVerbalePP == 2) || (isIf == 0 && tempoVerbalePP == 5)))
+				&& (((isIf == 1 && tempoVerbalePP == 11) || (isIf == 1 && tempoVerbalePP == 18) || (isIf == 1 && tempoVerbalePP == 19))
+				|| ((isIf == 0&& tempoVerbaleSP == 11) || (isIf == 0 && tempoVerbaleSP == 18)|| (isIf == 0 && tempoVerbaleSP == 19)))){
+				System.out.println("Il tipo di condizionale e': mixed conditional");
+				conferma++;
+			}
 		}
-		if (((isIf == 1 && tempoVerbaleSP == 2) || (isIf == 0 && tempoVerbalePP == 2))
-				&& ((isIf == 1 && tempoVerbalePP == 10) || (isIf == 0 && tempoVerbaleSP == 10))) {
-			System.out.println("Il tipo di condizionale e': 2");
-		}
-		if (((isIf == 1 && tempoVerbaleSP == 6) || (isIf == 0 && tempoVerbalePP == 6))
-				&& ((isIf == 1 && tempoVerbalePP == 11) || (isIf == 0 && tempoVerbaleSP == 11))) {
-			System.out.println("Il tipo di condizionale e': 3");
-		}
-		if (((isIf == 1 && tempoVerbaleSP == 1) || (isIf == 0 && tempoVerbalePP == 1))
-				&& ((isIf == 1 && tempoVerbalePP == 1) || (isIf == 0 && tempoVerbaleSP == 1))) {
-			System.out.println("Il tipo di condizionale e': 0");
+		else if(conferma==0)
+		{
+			System.out.println("Errore frase inserita!");
 		}
 	}
 }
