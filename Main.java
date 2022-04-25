@@ -84,7 +84,7 @@ public class Main {
 		 *if he does not call you, tell me immediately
 		 */
 		String frase = "if he does not call you, tell me immediately.";
-		creaConzizionali();
+		creaCondizionali();
 		creazioneVettori();
 
 		phraseSplit(frase);
@@ -180,6 +180,7 @@ public class Main {
 		}
 	}
 
+	/** Metodo statico per riconoscere il tempo dei verbi */
 	private static void gendeRecognition() {
 		verbCheck();
 		if(verbiPrimoPeriodo.get(0).equals("would")){
@@ -323,7 +324,6 @@ public class Main {
 		}
 
 		//Tempi verbali secondo periodo
-
 		if(verbiSecondoPeriodo.get(0).equals("would")){
 			if(verbiSecondoPeriodo.size() == 2){
 				//would + base form
@@ -673,6 +673,7 @@ public class Main {
 		//System.out.println(verboCompostoSecondoPeriodo);
 	}
 
+	/** Metodo statico per scomporre la frase in parole */
 	private static void scomponiPeriodo() {
 		String copiaPP = primoPeriodo;
 		String copiaSP = secondoPeriodo;
@@ -708,7 +709,7 @@ public class Main {
 	/**
 	 * metodo statico per popolare la lista condizione
 	 */
-	private static void creaConzizionali() {
+	private static void creaCondizionali() {
 		condizione.add("if ");
 		condizione.add("as long as ");
 		condizione.add("only if ");
@@ -722,6 +723,7 @@ public class Main {
 		condizione.add("unless ");
 	}
 
+	/** Metodo statico per ricavare il tipo di condizionale della frase */
 	private static void theLastOfUs() {
 		// tipo uno
 		int conferma = 0;
@@ -780,33 +782,76 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Metodo statico per permettere all'utente di modificare o meno i verbi riconosciuti dal programma 
+	 */
 	private static void verbCheck(){
-		int scelta = 0;
+		String scelta;
+		int inputRem = 0;
 		int rimozione = 0;
 		Scanner sc1 = new Scanner(System.in);
-		System.out.println("Il seguente verbo e' corretto? " + verboCompostoPrimoPeriodo);
-		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
-		scelta = sc1.nextInt();
-		while (scelta == 1) {
-			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
-					+ verboCompostoPrimoPeriodo);
-			rimozione = sc1.nextInt() - 1;
-			System.out.println("Il seguente verbo e' stato rimosso: " + verbiPrimoPeriodo.get(rimozione));
-			verbiPrimoPeriodo.remove(rimozione);
-			scelta = 0;
-		}
-		System.out.println("--------------------------------------------------------------");
-		System.out.println("Il seguente verbo e' corretto? " + verboCompostoSecondoPeriodo);
-		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
-		scelta = sc1.nextInt();
-		while (scelta == 1) {
-			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
-					+ verboCompostoSecondoPeriodo);
-			rimozione = sc1.nextInt()-1;
-			System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
-			verbiSecondoPeriodo.remove(rimozione);
-			scelta = 0;
-		}
+		Scanner sc2 = new Scanner(System.in);
+		do {
+			System.out.println("Si vuole modificare il seguente verbo? " + verboCompostoPrimoPeriodo);
+			System.out.print("[y/n]: ");
+			scelta = sc1.nextLine().toLowerCase();
+			if(scelta.charAt(0)=='y') {
+				System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): " + verboCompostoPrimoPeriodo);
+				int i = 0;
+				do {
+					if(i>0){
+						System.out.println("Valore errato riprovare");
+					}
+					inputRem = atoi(sc2.nextLine());
+					i++;
+				} while (inputRem<1||inputRem>verbiPrimoPeriodo.size());
+				rimozione = inputRem - 1;
+				System.out.println("Il seguente verbo e' stato rimosso: " + verbiPrimoPeriodo.get(rimozione));
+				verbiPrimoPeriodo.remove(rimozione);	
+			} else if (scelta.charAt(0)=='n'){
+				System.out.println("Nessun verbo rimosso");
+			} else {
+				System.out.println("Dati errati riprovare");
+			}
+		} while (scelta.charAt(0)!='n' && scelta.charAt(0)!='y');
+
+		do {
+			System.out.println("Si vuole modificare il seguente verbo? " + verboCompostoSecondoPeriodo);
+			System.out.print("[y/n]: ");
+			scelta = sc1.nextLine().toLowerCase();
+			if(scelta.charAt(0)=='y') {
+				System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): " + verboCompostoSecondoPeriodo);
+				int i = 0;
+				do {
+					if(i>0){
+						System.out.println("Valore errato riprovare");
+					}
+					inputRem = atoi(sc2.nextLine());
+					i++;
+				} while (inputRem<1||inputRem>verbiSecondoPeriodo.size());
+				rimozione = inputRem - 1;
+				System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
+				verbiSecondoPeriodo.remove(rimozione);	
+			} else if (scelta.charAt(0)=='n'){
+				System.out.println("Nessun verbo rimosso");
+			} else {
+				System.out.println("Dati errati riprovare");
+			}
+		} while (scelta.charAt(0)!='n' && scelta.charAt(0)!='y');
 		sc1.close();
+		sc2.close();
+	}
+
+	/**
+	 * Metodo statico per convertire String in int
+	 * @param s stringa di input
+	 * @return la stringa convertita in int oppure -1 in caso di eccezione
+	 */
+	private static int atoi(String s){
+		try {
+			return Integer.valueOf(s);
+		} catch (NumberFormatException e) {
+			return -1;
+		}
 	}
 }

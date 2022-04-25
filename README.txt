@@ -13,4 +13,3 @@ TODO:
 G: ampliamento assortimento verbi
 G-F: creare una buona UI (GUI?) 
 inglesizzare il tutto
-F: controlli su scanner
