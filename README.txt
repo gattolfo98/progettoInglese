@@ -1,6 +1,6 @@
 NOME DEL PROGETTO: progettoInglese
 OBIETTIVO DEL PROGETTO: Data una frase condizionale in inglese, dedurne il tipo
-VERSIONE oppure DATA di modifica: 22/04/22 versione 1.0 stable
+VERSIONE oppure DATA di modifica: 25/04/22 versione 1.0 stable
 COME AVVIARE IL PROGETTO: Compilare ed eseguire il file Main.java coi comandi: javac Main.java && java Main
 AUTORE:Triglia Gabriele, Biasioli Federico
 ISTRUZIONI PER L'UTENTE: contollare se i verbi presi dal programma sono giusti

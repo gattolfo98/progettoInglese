@@ -85,8 +85,9 @@ public class Main {
 		 */
 		String frase = "if he does not call you, tell me immediately.";
 		creaConzizionali();
-		phraseSplit(frase);
 		creazioneVettori();
+
+		phraseSplit(frase);
 		scomponiPeriodo();
 		Rumbling();
 		gendeRecognition();
@@ -131,7 +132,6 @@ public class Main {
 				primoPeriodo = lineaFile.substring(0, indice2);
 				System.out.println(primoPeriodo);
 				System.out.println(secondoPeriodo);
-				int lunghezza = secondoPeriodo.length();
 				isIf = 0;
 			}
 
@@ -181,33 +181,7 @@ public class Main {
 	}
 
 	private static void gendeRecognition() {
-		int scelta = 0;
-		int rimozione = 0;
-		Scanner sc1 = new Scanner(System.in);
-		System.out.println("Il seguente verbo e' corretto? " + verboCompostoPrimoPeriodo);
-		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
-		scelta = sc1.nextInt();
-		while (scelta == 1) {
-			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
-					+ verboCompostoPrimoPeriodo);
-			rimozione = sc1.nextInt() - 1;
-			System.out.println("Il seguente verbo e' stato rimosso: " + verbiPrimoPeriodo.get(rimozione));
-			verbiPrimoPeriodo.remove(rimozione);
-			scelta = 0;
-		}
-		System.out.println("--------------------------------------------------------------");
-		System.out.println("Il seguente verbo e' corretto? " + verboCompostoSecondoPeriodo);
-		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
-		scelta = sc1.nextInt();
-		while (scelta == 1) {
-			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
-					+ verboCompostoSecondoPeriodo);
-			rimozione = sc1.nextInt()-1;
-			System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
-			verbiSecondoPeriodo.remove(rimozione);
-			scelta = 0;
-		}
-		sc1.close();
+		verbCheck();
 		if(verbiPrimoPeriodo.get(0).equals("would")){
 			if(verbiPrimoPeriodo.size() == 2){
 				//would + base form
@@ -804,5 +778,35 @@ public class Main {
 		{
 			System.out.println("Errore frase inserita!");
 		}
+	}
+
+	private static void verbCheck(){
+		int scelta = 0;
+		int rimozione = 0;
+		Scanner sc1 = new Scanner(System.in);
+		System.out.println("Il seguente verbo e' corretto? " + verboCompostoPrimoPeriodo);
+		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
+		scelta = sc1.nextInt();
+		while (scelta == 1) {
+			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
+					+ verboCompostoPrimoPeriodo);
+			rimozione = sc1.nextInt() - 1;
+			System.out.println("Il seguente verbo e' stato rimosso: " + verbiPrimoPeriodo.get(rimozione));
+			verbiPrimoPeriodo.remove(rimozione);
+			scelta = 0;
+		}
+		System.out.println("--------------------------------------------------------------");
+		System.out.println("Il seguente verbo e' corretto? " + verboCompostoSecondoPeriodo);
+		System.out.println("premere 0 per confermare / premere 1 per modificare il verbo");
+		scelta = sc1.nextInt();
+		while (scelta == 1) {
+			System.out.println("Scegliere quale verbo togliere (es have travelled do --> premere 3 per rimuovere do): "
+					+ verboCompostoSecondoPeriodo);
+			rimozione = sc1.nextInt()-1;
+			System.out.println("Il seguente verbo e' stato rimosso: " + verbiSecondoPeriodo.get(rimozione));
+			verbiSecondoPeriodo.remove(rimozione);
+			scelta = 0;
+		}
+		sc1.close();
 	}
 }
